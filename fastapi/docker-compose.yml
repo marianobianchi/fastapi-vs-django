@@ -1,0 +1,25 @@
+version: '3.4'
+
+volumes:
+    fastapi-db:
+
+services:
+    db:
+        image: postgres:12-alpine
+        container_name: fastapi-db
+        environment:
+            POSTGRES_PASSWORD: fastapi
+            PGDATA: /var/lib/postgresql/data/pgdata
+        volumes:
+            - fastapi-db:/var/lib/postgresql/data
+        ports:
+            - "5440:5432"
+
+    app:
+        image: fastapi-books
+        build: .
+        container_name: fastapi-app
+        environment:
+            DATABASE_URL: "postgresql://postgres:fastapi@db:5432/postgres"
+        ports:
+            - "8000:80"

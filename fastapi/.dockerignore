@@ -1,0 +1,11 @@
+env
+
+__pycache__
+*.pyc
+
+.vscode
+
+
+*.csv
+book_csv_reader.py
+initial_data.py
