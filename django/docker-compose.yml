@@ -1,0 +1,25 @@
+version: '3.4'
+
+volumes:
+    django-db:
+
+services:
+    db:
+        image: postgres:12-alpine
+        container_name: django-db
+        environment:
+            POSTGRES_PASSWORD: django
+            PGDATA: /var/lib/postgresql/data/pgdata
+        volumes:
+            - django-db:/var/lib/postgresql/data
+        ports:
+            - "5440:5432"
+
+    # app:
+    #     image: django-books
+    #     build: .
+    #     container_name: django-app
+    #     environment:
+    #         DATABASE_URL: "postgresql://postgres:django@db:5432/postgres"
+    #     ports:
+    #         - "8000:80"

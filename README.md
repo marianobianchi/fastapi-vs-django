@@ -47,7 +47,7 @@ Fields:
 - public endpoint
 
 ## Create book
-- title and author are mandatory
+- title is mandatory
 - other fields are optional
 - need permission to create book
 
