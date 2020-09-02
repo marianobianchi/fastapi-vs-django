@@ -8,3 +8,6 @@ startdb:
     		   -v fastapi-postgres:/var/lib/postgresql/data \
 			   -p 5440:5432 \
 			   postgres
+
+startapp:
+	uvicorn sql_app.main:app --reload

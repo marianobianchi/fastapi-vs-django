@@ -62,3 +62,9 @@ def get_author_by_name(db: Session, name: str):
     return db.query(models.Author)\
              .filter(models.Author.full_name.like(f'%{name}%'))\
              .all()
+
+
+def get_user_by_username(db: Session, username: str):
+    return db.query(models.User)\
+             .filter(models.User.username == username)\
+             .first()

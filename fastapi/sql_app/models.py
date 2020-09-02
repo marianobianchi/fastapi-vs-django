@@ -1,10 +1,12 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, Table
+from sqlalchemy import (Boolean, Column, Date, ForeignKey, Integer, String,
+                        Table)
 from sqlalchemy.orm import relationship
 
 from .database import Base
 
-
-association_table = Table('BookAuthors', Base.metadata,
+association_table = Table(
+    'BookAuthors',
+    Base.metadata,
     Column('author_id', Integer, ForeignKey('authors.id')),
     Column('book_id', Integer, ForeignKey('books.id'))
 )
@@ -34,3 +36,14 @@ class Author(Base):
         'Book',
         secondary=association_table,
         back_populates='authors')
+
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String)
+    email = Column(String)
+    full_name = Column(String)
+    disabled = Column(Boolean)
+    hashed_password = Column(String)
