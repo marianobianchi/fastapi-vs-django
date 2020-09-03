@@ -1,10 +1,13 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from . import models, schemas
 
 
 def get_book(db: Session, book_id: int):
-    return db.query(models.Book).filter(models.Book.id == book_id).first()
+    return db.query(models.Book)\
+             .filter(models.Book.id == book_id)\
+             .options(joinedload(models.Book.authors))\
+             .first()
 
 
 def get_book_by_title(db: Session, title: str):
@@ -23,7 +26,11 @@ def get_books(
     else:
         base_query = db.query(models.Book)\
                        .filter(models.Book.title.like(f'%{title}%'))
-    return base_query.order_by(models.Book.id).offset(skip).limit(limit).all()
+    return base_query.options(joinedload(models.Book.authors))\
+                     .order_by(models.Book.id)\
+                     .offset(skip)\
+                     .limit(limit)\
+                     .all()
 
 
 def _commit_book(db: Session, db_book: models.Book, data: dict):

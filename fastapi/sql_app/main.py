@@ -60,7 +60,7 @@ async def update_book(
 
 
 @app.get('/books/', response_model=List[schemas.Book])
-async def read_books(title: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+async def read_books(title: str = None, skip: int = 0, limit: int = 30, db: Session = Depends(get_db)):
     books = crud.get_books(db, title=title, skip=skip, limit=limit)
     return books
 
