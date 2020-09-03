@@ -15,11 +15,12 @@ services:
         ports:
             - "5440:5432"
 
-    # app:
-    #     image: django-books
-    #     build: .
-    #     container_name: django-app
-    #     environment:
-    #         DATABASE_URL: "postgresql://postgres:django@db:5432/postgres"
-    #     ports:
-    #         - "8000:80"
+    app:
+        image: django-books
+        build: .
+        container_name: django-app
+        environment:
+            DB_HOST: db
+            DB_PORT: 5432
+        ports:
+            - "8000:80"

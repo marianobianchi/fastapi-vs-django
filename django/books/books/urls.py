@@ -27,4 +27,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api-auth/', include('rest_framework.urls')),
+    path('token/', api_books.CustomAuthToken.as_view())
 ] + router.urls
