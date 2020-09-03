@@ -130,7 +130,7 @@ STATIC_URL = '/static/'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'books.pagination.OnlyResultsPagination',
     'PAGE_SIZE': 30,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'books.authentication.InsecureTokenAuthentication',
