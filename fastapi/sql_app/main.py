@@ -1,8 +1,10 @@
 from typing import List
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status, Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
-
 from sqlalchemy.orm import Session
 
 from . import auth, crud, models, schemas
@@ -11,6 +13,14 @@ from .database import engine, get_db
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({"detail": exc.errors(), "body": exc.body}),
+    )
 
 
 @app.post('/token')
@@ -46,7 +56,7 @@ async def create_book(
     return crud.create_book(db=db, book=book)
 
 
-@app.patch('/books/{book_id}', response_model=schemas.Book)
+@app.patch('/books/{book_id}/', response_model=schemas.Book)
 async def update_book(
     book_id: int,
     book: schemas.BookUpdate,
@@ -60,12 +70,12 @@ async def update_book(
 
 
 @app.get('/books/', response_model=List[schemas.Book])
-async def read_books(title: str = None, skip: int = 0, limit: int = 30, db: Session = Depends(get_db)):
-    books = crud.get_books(db, title=title, skip=skip, limit=limit)
+async def read_books(title: str = None, offset: int = 0, limit: int = 30, db: Session = Depends(get_db)):
+    books = crud.get_books(db, title=title, offset=offset, limit=limit)
     return books
 
 
-@app.get('/books/{book_id}', response_model=schemas.Book)
+@app.get('/books/{book_id}/', response_model=schemas.Book)
 async def read_book(book_id: int, db: Session = Depends(get_db)):
     db_book = crud.get_book(db, book_id=book_id)
     if not db_book:

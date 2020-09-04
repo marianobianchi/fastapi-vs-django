@@ -8,4 +8,4 @@ class OnlyResultsPagination(pagination.LimitOffsetPagination):
 
     def get_count(self, queryset):
         # avoid calling database for a count query
-        return self.default_limit + 1
+        return 11130

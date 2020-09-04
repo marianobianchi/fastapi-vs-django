@@ -17,7 +17,7 @@ def get_book_by_title(db: Session, title: str):
 def get_books(
     db: Session,
     title: str = None,
-    skip: int = 0,
+    offset: int = 0,
     limit: int = 30
 ):
     base_query = None
@@ -28,7 +28,7 @@ def get_books(
                        .filter(models.Book.title.like(f'%{title}%'))
     return base_query.options(joinedload(models.Book.authors))\
                      .order_by(models.Book.id)\
-                     .offset(skip)\
+                     .offset(offset)\
                      .limit(limit)\
                      .all()
 

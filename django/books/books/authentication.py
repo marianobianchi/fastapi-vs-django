@@ -7,6 +7,8 @@ class InsecureTokenAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         auth_header = request.META.get('HTTP_AUTHORIZATION')
         if not auth_header or 'Bearer' not in auth_header:
+            print(f'###\n\n{request.META.get("HTTP_AUTHORIZATION")}\n\n###')
+            print(f'###\n\n{request.META}\n\n###')
             return None
         username = auth_header.split()[1]
         try:
